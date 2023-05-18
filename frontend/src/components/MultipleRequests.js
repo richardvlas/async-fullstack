@@ -5,6 +5,7 @@ function MultipleRequests() {
     const [response, setResponse] = useState([]);
     const [requestCount, setRequestCount] = useState(0);
     const [requestTimes, setRequestTimes] = useState([]);
+    const [backendThreadCount, setBackendThreadCount] = useState(false);
     
     const handleClick = async () => {
         setLoading(true);
@@ -20,6 +21,7 @@ function MultipleRequests() {
             setRequestTimes(prevRequestTimes =>
                 prevRequestTimes.concat({ requestId: requestCount, requestTime })
             );
+            setBackendThreadCount(json.backend_thread_count);
         } catch (error) {
             setResponse(prevResponse => prevResponse.concat(error.message));
         } finally {
@@ -32,7 +34,8 @@ function MultipleRequests() {
             <button onClick={handleClick}>
                 {loading ? 'Loading...' : 'Long request'}
             </button>
-            <p>Number of requests: {requestCount}</p>            
+            <p>Number of requests: {requestCount}</p>
+            Number of active threads in backend: {backendThreadCount}            
             <p>Request times: {requestTimes.map((requestTime, index) => (
                 <li key={index}>Request {requestTime.requestId} (Time {requestTime.requestTime / 1000} s)</li>
             ))}</p>
